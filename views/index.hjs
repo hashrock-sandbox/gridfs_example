@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>{{ title }}</h1>
+
+    <form method="POST" enctype="multipart/form-data" action="files/">
+      <input type="file" name="filefield"><br />
+      <input type="submit">
+    </form>
+
+    <h1>FileList</h1>
+
+    <ul>
+      {{#files}}<li>
+      <a href="/upload/{{.}}">{{.}}</a>
+      <form method="POST" action="/delete/">
+      <input type="hidden" name="fileName" value="{{.}}"/>
+      <input type="submit" value="x">
+      </form>
+      </li>{{/files}}
+    </ul>
+  </body>
+</html>
