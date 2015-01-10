@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var files = require('./routes/files');
+var MongoClient = require('mongodb').MongoClient;
 
 var app = express();
 
@@ -22,6 +23,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 //app.use(express.static(path.join(__dirname, 'public')));
+
+var mongo_url = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : process.env.MONGODB_URL;
+mongo_url = mongo_url ? mongo_url : "mongodb://localhost:27017";
+var url = mongo_url + '/gridfs_example';
+
+app.use(function(req,res,next){
+    MongoClient.connect(url, function(err, db) {
+        var connectGridfs = require('connect-gridfs');
+        app.get("/upload/", connectGridfs({db: db}));
+        req.db = db;
+        next();
+    });
+});
 
 app.use('/', routes);
 app.use('/users', users);
