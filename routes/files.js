@@ -4,7 +4,9 @@ var fs = require("fs");
 var express = require('express');
 var multer  = require('multer');
 
-var url = 'mongodb://127.0.0.1:27017/gridfs_example';
+var mongo_url = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : process.env.MONGODB_URL;
+mongo_url = mongo_url ? mongo_url : "mongodb://localhost:27017";
+var url = mongo_url + '/gridfs_example';
 var router = express.Router();
 
 router.get('/', function(req, res) {

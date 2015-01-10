@@ -4,7 +4,9 @@ var MongoClient = require('mongodb').MongoClient;
 var GridFs = require('grid-fs');
 var fs = require("fs");
 
-var url = 'mongodb://127.0.0.1:27017/gridfs_example';
+var mongo_url = process.env.MONGOLAB_URI ? process.env.MONGOLAB_URI : process.env.MONGODB_URL;
+mongo_url = mongo_url ? mongo_url : "mongodb://localhost:27017";
+var url = mongo_url + '/gridfs_example';
 
 router.post("/delete/", function (req, res) {
     var fileName = req.param("fileName");
